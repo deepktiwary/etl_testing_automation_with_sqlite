@@ -1,5 +1,4 @@
 import sqlite3
-import pandas as pd
 
 con = sqlite3.connect('etl_testing_automation.db')
 cur = con.cursor()
@@ -288,20 +287,3 @@ def run_sql_query_for_validation(sql_query_to_be_run):
     print("End of the Query")
     data = cur.fetchall()
     return data
-
-def extract_columns_from_tables_in_list_form(table):
-    raw_column_list = run_sql_query_for_validation(f'''
-    select column_name
-    from information_schema.columns
-    where table_name = '{table}'
-''')
-    column_list = []
-    for item in raw_column_list:
-        column_list.append(item[0])
-    return column_list
-
-
-def extract_columns_from_mapping_doc(tab_name):
-    column_list_raw = pd.read_excel("Mapping_Doc_ETL_Testing_Automation.xlsx", sheet_name=tab_name)
-    column_list = column_list_raw['Target Column'].tolist()
-    return column_list
